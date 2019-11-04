@@ -70,7 +70,7 @@ sudo mkdir /var/www/html/wordpress/wp-content/uploads
 sudo chown www-data:www-data -R /var/www/html/*
 sudo find . -type d -exec chmod 755 {} \;
 sudo find . -type f -exec chmod 644 {} \;
-
+sudo chmod 1777 /tmp
 sudo service apache2 restart
 sudo service mysql restart
 ######################################################
