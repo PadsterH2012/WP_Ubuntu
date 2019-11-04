@@ -29,6 +29,9 @@ sudo apt install php7.3 php7.3-fpm php7.3-mysql php7.1-mcrypt php-mbstring php-g
 sudo phpenmod mcrypt
 sudo phpenmod mbstring
 sudo perl -pi -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.3/fpm/php.ini
+sudo perl -pi -e "s/;max_execution_time = 30/max_execution_time = 60/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/;max_input_vars = 1000/max_input_vars = 2000/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/;upload_max_filesize = .*/upload_max_filesize = 16M/g" /etc/php/7.3/apache2/php.ini
 sudo perl -pi -e "s/domain.com/$MY_DOMAIN/g" /etc/apache2/sites-available/default
 sudo perl -pi -e "s/www.domain.com/www.$MY_DOMAIN/g" /etc/apache2/sites-available/default
 sudo apt install mariadb-client mariadb-server -y
@@ -72,6 +75,8 @@ sudo cp ./wordpress/wp-config-sample.php ./wordpress/wp-config.php
 sudo touch ./wordpress/.htaccess
 sudo chmod 660 ./wordpress/.htaccess
 sudo mkdir ./wordpress/wp-content/upgrade
+AUTHKEY='define( 'AUTH_KEY',         'put your unique phrase here' );'
+sudo printf '%s\n' "g/$AUTHKEY/d" a "$WPSalts" . w | ed -s /var/www/html/wp-config.php
 sudo cp -a ./wordpress/. /var/www/html
 sudo chown -R www-data /var/www/html
 sudo find /var/www/html -type d -exec chmod g+s {} \;
