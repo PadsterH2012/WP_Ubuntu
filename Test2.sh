@@ -9,7 +9,7 @@ read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 #############################################
 sudo apt-get update && apt get upgrade -y
-sudo apt install apache2 -y
+sudo apt install open-vm-tools htop apache2 software-properties-common -y
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
@@ -56,7 +56,7 @@ sudo apt purge expect -y
 sudo apt autoremove -y
 sudo apt autoclean -y
 #####################################################
-sudo add-apt-repository ppa:ondrej/php
+sudo add-apt-repository ppa:ondrej/php -y
 sudo apt-get update
 sudo apt install php7.3
 sudo apt install php7.3-common php7.3-cli php7.3-bcmath php7.3-bz2 php7.3-curl php7.3-gd php7.3-intl php7.3-json php7.3-mbstring php7.3-readline php7.3-xml php7.3-zip php7.3-fpm
