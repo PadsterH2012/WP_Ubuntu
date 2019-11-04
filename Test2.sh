@@ -62,12 +62,12 @@ cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
 sudo cp -R wordpress /var/www/html/
 
-cd /var/www/html/
-sudo mkdir ./wordpress/wp-content/uploads
 
-sudo cp ./wordpress/wp-config-sample.php ./wordpress/wp-config.php
+sudo mkdir /var/www/html/wordpress/wp-content/uploads
 
-sudo chown www-data:www-data -R *
+sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+
+sudo chown www-data:www-data -R /var/www/html/*
 sudo find . -type d -exec chmod 755 {} \;
 sudo find . -type f -exec chmod 644 {} \;
 
