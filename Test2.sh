@@ -6,7 +6,7 @@ read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
 #read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
 read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
 read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
-read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
+#read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 #############################################
 sudo apt-get update && apt get upgrade -y
 sudo apt install apache2 -y
@@ -72,7 +72,14 @@ sudo find . -type f -exec chmod 644 {} \;
 
 
 ######################################################
+echo "###############################################"
+echo
 echo "Database Name: $DB_NAME"
+echo
 echo "Username: $DB_USERNAME"
 echo "Password: $DB_PASSWORD"
+echo
+echo
 echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
+echo
+echo "###############################################"
