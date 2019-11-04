@@ -14,7 +14,7 @@ read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
 sudo apt update -y
 sudo apt upgrade -y
 echo "Installing Misc Items"
-sudo apt install open-vm-tools htop nginx -y
+sudo apt install open-vm-tools htop nginx software-properties-common -y
 echo "Installing PHP7.3"
 sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
