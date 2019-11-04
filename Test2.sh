@@ -13,11 +13,13 @@ sudo apt install apache2 -y
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
+###########################################
 sudo mysql -u root
-echo "use mysql;"
-echo "update user set plugin='' where User='root';"
-echo "flush privileges;"
-echo "\q"
+use mysql;
+update user set plugin='' where User='root';
+flush privileges;
+\q
+##################################################
 CURRENT_MYSQL_PASSWORD=''
 NEW_MYSQL_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 SECURE_MYSQL=$(expect -c "
