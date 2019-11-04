@@ -75,6 +75,9 @@ sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
 sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
 sudo apt-get update && apt get upgrade -y
 sudo apt install webmin -y
+#############################################
+sudo apt-get update && apt get upgrade -y
+#############################################
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
