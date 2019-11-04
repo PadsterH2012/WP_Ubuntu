@@ -11,9 +11,9 @@ clear
 echo "Please provide your domain name without the www. (e.g. mydomain.com)"
 read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
 ## Misc Install
-apt update -y
-apt upgrade -y
+sudo apt update -y
+sudo apt upgrade -y
 echo "Installing Misc Items"
-apt install open-vm-tools htop nginx -y
+sudo apt install open-vm-tools htop nginx -y
 echo "Installing PHP7.3"
-apt install php7.3-fpm php7.3-mysql php7.3-mcrypt php-mbstring php-gettext php-curl php7.3-gd -y
+sudo apt install php7.3-fpm php7.3-mysql php7.3-mcrypt php-mbstring php-gettext php-curl php7.3-gd -y
