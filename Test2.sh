@@ -60,10 +60,17 @@ sudo apt install php php-mysql -y
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
 sudo cp -R wordpress /var/www/html/
-sudo chown www-data:www-data /var/www/html/wordpress/
-sudo chmod -R 755 /var/www/html/wordpress/
-sudo mkdir /var/www/html/wordpress/wp-content/uploads
-sudo chown -R www-data:www-data /var/www/html/wordpress/wp-content/uploads/
+
+cd /var/www/html/
+sudo mkdir /wordpress/wp-content/uploads
+
+sudo cp /wordpress/wp-config-sample.php /wordpress/wp-config.php
+
+sudo chown www-data:www-data -R
+sudo find . -type d -exec chmod 755 {} \;
+sudo find . -type f -exec chmod 644 {} \;
+
+
 ######################################################
 echo "Database Name: $DB_NAME"
 echo "Username: $DB_USERNAME"
