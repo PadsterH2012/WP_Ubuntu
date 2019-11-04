@@ -65,7 +65,7 @@ sudo cp -R wordpress /var/www/html/
 
 sudo mkdir /var/www/html/wordpress/wp-content/uploads
 
-sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+#sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 
 sudo chown www-data:www-data -R /var/www/html/*
 sudo find . -type d -exec chmod 755 {} \;
