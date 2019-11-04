@@ -13,6 +13,11 @@ sudo apt install apache2 -y
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
+sudo mysql -u root
+echo "use mysql;"
+echo "update user set plugin='' where User='root';"
+echo "flush privileges;"
+echo "\q"
 CURRENT_MYSQL_PASSWORD=''
 NEW_MYSQL_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 SECURE_MYSQL=$(expect -c "
@@ -54,3 +59,8 @@ sudo chown www-data:www-data /var/www/html/wordpress/
 sudo chmod -R 755 /var/www/html/wordpress/
 sudo mkdir /var/www/html/wordpress/wp-content/uploads
 sudo chown -R www-data:www-data /var/www/html/wordpress/wp-content/uploads/
+######################################################
+echo "Database Name: $DB_NAME"
+echo "Username: $DB_USERNAME"
+echo "Password: $DB_PASSWORD"
+echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
