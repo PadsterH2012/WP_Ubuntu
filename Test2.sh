@@ -7,6 +7,7 @@ read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
 read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
 read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
+sudo hostname $MY_DOMAIN
 #############################################
 sudo apt-get update && apt get upgrade -y
 sudo apt install open-vm-tools htop apache2 software-properties-common -y
