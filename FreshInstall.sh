@@ -30,7 +30,7 @@ CURRENT_MYSQL_PASSWORD=''
 NEW_MYSQL_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 SECURE_MYSQL=$(expect -c "
 set timeout 3
-sudo spawn mysql_secure_installation
+spawn mysql_secure_installation
 expect \"Enter current password for root (enter for none):\"
 send \"$CURRENT_MYSQL_PASSWORD\r\"
 expect \"root password?\"
@@ -76,7 +76,7 @@ sudo chmod -R g+w /var/www/html/wp-content/plugins
 sudo perl -pi -e "s/database_name_here/$dbname/g" /var/www/html/wp-config.php
 sudo perl -pi -e "s/username_here/$dbuser/g" /var/www/html/wp-config.php
 sudo perl -pi -e "s/password_here/$userpass/g" /var/www/html/wp-config.php
-sudo service nginx restart
+sudo service apache2 restart
 sudo service php7.3-fpm restart
 sudo service mysql restart
 echo "You are almost done. Replace the Secret Key in the wp-config.php with:"
