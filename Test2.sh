@@ -12,11 +12,6 @@ sudo hostname $MY_DOMAIN
 sudo apt-get update && apt get upgrade -y
 #############################################
 sudo apt install open-vm-tools htop apache2 software-properties-common -y
-#############################################
-sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
-sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
-sudo apt-get update && apt get upgrade -y
-sudo apt install webmin -y
 ##############################################
 sudo debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
@@ -75,6 +70,11 @@ sudo apt install imagemagick php7.3-common php7.3-cli php7.3-bcmath php-imagick 
 sudo a2dismod php7.2
 sudo a2enmod php7.3
 sudo service apache2 restart
+#############################################
+sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
+sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
+sudo apt-get update && apt get upgrade -y
+sudo apt install webmin -y
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
