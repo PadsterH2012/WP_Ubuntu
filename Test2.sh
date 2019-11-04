@@ -56,7 +56,7 @@ sudo apt purge expect -y
 sudo apt autoremove -y
 sudo apt autoclean -y
 #####################################################
-sudo apt install php php-mysql -y
+sudo apt install php php-gd php-imagick php-curl php-mysql -y
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
