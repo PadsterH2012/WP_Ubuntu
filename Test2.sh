@@ -16,7 +16,7 @@ sudo apt install open-vm-tools htop apache2 software-properties-common -y
 sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
 sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
 sudo apt update
-sudo apt install webmin
+sudo apt install webmin -y
 ##############################################
 sudo debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
