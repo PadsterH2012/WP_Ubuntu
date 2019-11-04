@@ -47,6 +47,7 @@ send \"y\r\"
 expect eof
 ")
 echo "${SECURE_MYSQL}"
+userpass=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 echo "CREATE DATABASE $DB_NAME;" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "CREATE USER '$DB_USERNAME'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USERNAME'@'localhost';" | mysql -u root -p$NEW_MYSQL_PASSWORD
@@ -77,7 +78,7 @@ echo
 echo "Database Name: $DB_NAME"
 echo
 echo "Username: $DB_USERNAME"
-echo "Password: $DB_PASSWORD"
+echo "Password: $userpass"
 echo
 echo
 echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
