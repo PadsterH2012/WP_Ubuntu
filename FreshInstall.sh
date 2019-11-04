@@ -6,6 +6,8 @@
 # WP Install
 #
 #
+WPSalts=$(wget https://api.wordpress.org/secret-key/1.1/salt/ -q -O -)
+TablePrefx=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 9 | head -n 1)_
 ## Server Setup
 clear
 echo "Please provide your domain name without the www. (e.g. mydomain.com)"
@@ -20,7 +22,8 @@ sudo apt upgrade -y
 echo "Installing Misc Items"
 sudo apt install open-vm-tools htop apache2 software-properties-common -y
 echo "Installing PHP7.3"
-sudo add-apt-repository ppa:ondrej/php
+sudo add-apt-repository ppa:ondrej/php -y
+sudo add-apt-repository ppa:ondrej/apache2 -y
 sudo apt update -y
 sudo apt install php7.3 php7.3-fpm php7.3-mysql php7.1-mcrypt php-mbstring php-gettext php-curl php7.3-gd -y
 sudo phpenmod mcrypt
@@ -81,15 +84,16 @@ sudo perl -pi -e "s/password_here/$DB_PASSWORD/g" /var/www/html/wp-config.php
 sudo service apache2 restart
 sudo service php7.3-fpm restart
 sudo service mysql restart
-echo "You are almost done. Replace the Secret Key in the wp-config.php with:"
-echo
-echo
-curl -s https://api.wordpress.org/secret-key/1.1/salt/
-echo
-echo
-echo "Use: nano /var/www/html/wp-config.php"
-echo "... to edit the file!"
-echo
+#echo "You are almost done. Replace the Secret Key in the wp-config.php with:"
+#echo
+#echo
+$WPSalts
+#curl -s https://api.wordpress.org/secret-key/1.1/salt/
+#echo
+#echo
+#echo "Use: nano /var/www/html/wp-config.php"
+#echo "... to edit the file!"
+#echo
 echo "Then visit your website IP or Domain name to complete the WordPress Installation."
 echo
 read -p "Press [ENTER] to display your WordPress MySQL database details!"
