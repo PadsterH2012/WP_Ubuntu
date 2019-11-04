@@ -10,6 +10,10 @@
 clear
 echo "Please provide your domain name without the www. (e.g. mydomain.com)"
 read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+#read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
+read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
+read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
+read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 ## Misc Install
 sudo apt update -y
 sudo apt upgrade -y
@@ -51,12 +55,10 @@ expect eof
 ")
 echo "${SECURE_MYSQL}"
 # Create WordPress MySQL database
-dbname="wpdbse"
-dbuser="wpuser"
 userpass=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
-echo "CREATE DATABASE $dbname;" | mysql -u root -p$NEW_MYSQL_PASSWORD
-echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$NEW_MYSQL_PASSWORD
-echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" | mysql -u root -p$NEW_MYSQL_PASSWORD
+echo "CREATE DATABASE $DB_NAME;" | mysql -u root -p$NEW_MYSQL_PASSWORD
+echo "CREATE USER '$DB_USERNAME'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$NEW_MYSQL_PASSWORD
+echo "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USERNAME'@'localhost';" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "FLUSH PRIVILEGES;" | mysql -u root -p$NEW_MYSQL_PASSWORD
 sudo apt purge expect -y
 sudo apt autoremove -y
@@ -73,9 +75,9 @@ sudo find /var/www/html -type d -exec chmod g+s {} \;
 sudo chmod g+w /var/www/html/wp-content
 sudo chmod -R g+w /var/www/html/wp-content/themes
 sudo chmod -R g+w /var/www/html/wp-content/plugins
-sudo perl -pi -e "s/database_name_here/$dbname/g" /var/www/html/wp-config.php
-sudo perl -pi -e "s/username_here/$dbuser/g" /var/www/html/wp-config.php
-sudo perl -pi -e "s/password_here/$userpass/g" /var/www/html/wp-config.php
+sudo perl -pi -e "s/database_name_here/$DB_NAME/g" /var/www/html/wp-config.php
+sudo perl -pi -e "s/username_here/$DB_USERNAME/g" /var/www/html/wp-config.php
+sudo perl -pi -e "s/password_here/$DB_PASSWORD/g" /var/www/html/wp-config.php
 sudo service apache2 restart
 sudo service php7.3-fpm restart
 sudo service mysql restart
@@ -91,7 +93,7 @@ echo
 echo "Then visit your website IP or Domain name to complete the WordPress Installation."
 echo
 read -p "Press [ENTER] to display your WordPress MySQL database details!"
-echo "Database Name: $dbname"
-echo "Username: $dbuser"
-echo "Password: $userpass"
+echo "Database Name: $DB_NAME"
+echo "Username: $DB_USERNAME"
+echo "Password: $DB_PASSWORD"
 echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
