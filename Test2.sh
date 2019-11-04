@@ -10,7 +10,17 @@ read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 sudo hostname $MY_DOMAIN
 #############################################
 sudo apt-get update && apt get upgrade -y
+#############################################
 sudo apt install open-vm-tools htop apache2 software-properties-common -y
+#############################################
+sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
+sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
+sudo apt update
+sudo apt install webmin
+##############################################
+sudo debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
+sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+apt-get install -y postfix
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
