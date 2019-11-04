@@ -20,7 +20,7 @@ sudo apt install webmin -y
 ##############################################
 sudo debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-apt-get install -y postfix
+sudo apt-get install -y postfix
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
