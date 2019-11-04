@@ -19,18 +19,18 @@ echo "Installing PHP7.3"
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update -y
 sudo apt install php7.3 php7.3-fpm php7.3-mysql php7.1-mcrypt php-mbstring php-gettext php-curl php7.3-gd -y
-phpenmod mcrypt
-phpenmod mbstring
-perl -pi -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.3/fpm/php.ini
-perl -pi -e "s/domain.com/$MY_DOMAIN/g" /etc/apache2/sites-available/default
-perl -pi -e "s/www.domain.com/www.$MY_DOMAIN/g" /etc/apache2/sites-available/default
-apt install mariadb-client mariadb-server -y
-apt install expect -y
+sudo phpenmod mcrypt
+sudo phpenmod mbstring
+sudo perl -pi -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.3/fpm/php.ini
+sudo perl -pi -e "s/domain.com/$MY_DOMAIN/g" /etc/apache2/sites-available/default
+sudo perl -pi -e "s/www.domain.com/www.$MY_DOMAIN/g" /etc/apache2/sites-available/default
+sudo apt install mariadb-client mariadb-server -y
+sudo apt install expect -y
 CURRENT_MYSQL_PASSWORD=''
 NEW_MYSQL_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 SECURE_MYSQL=$(expect -c "
 set timeout 3
-spawn mysql_secure_installation
+sudo spawn mysql_secure_installation
 expect \"Enter current password for root (enter for none):\"
 send \"$CURRENT_MYSQL_PASSWORD\r\"
 expect \"root password?\"
@@ -58,27 +58,27 @@ echo "CREATE DATABASE $dbname;" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" | mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "FLUSH PRIVILEGES;" | mysql -u root -p$NEW_MYSQL_PASSWORD
-apt purge expect -y
-apt autoremove -y
-apt autoclean -y
-wget https://wordpress.org/latest.tar.gz
-tar xzvf latest.tar.gz
-cp ./wordpress/wp-config-sample.php ./wordpress/wp-config.php
-touch ./wordpress/.htaccess
-chmod 660 ./wordpress/.htaccess
-mkdir ./wordpress/wp-content/upgrade
-cp -a ./wordpress/. /var/www/html
-chown -R www-data /var/www/html
-find /var/www/html -type d -exec chmod g+s {} \;
-chmod g+w /var/www/html/wp-content
-chmod -R g+w /var/www/html/wp-content/themes
-chmod -R g+w /var/www/html/wp-content/plugins
-perl -pi -e "s/database_name_here/$dbname/g" /var/www/html/wp-config.php
-perl -pi -e "s/username_here/$dbuser/g" /var/www/html/wp-config.php
-perl -pi -e "s/password_here/$userpass/g" /var/www/html/wp-config.php
-service nginx restart
-service php7.1-fpm restart
-service mysql restart
+sudo apt purge expect -y
+sudo apt autoremove -y
+sudo apt autoclean -y
+sudo wget https://wordpress.org/latest.tar.gz
+sudo tar xzvf latest.tar.gz
+sudo cp ./wordpress/wp-config-sample.php ./wordpress/wp-config.php
+sudo touch ./wordpress/.htaccess
+sudo chmod 660 ./wordpress/.htaccess
+sudo mkdir ./wordpress/wp-content/upgrade
+sudo cp -a ./wordpress/. /var/www/html
+sudo chown -R www-data /var/www/html
+sudo find /var/www/html -type d -exec chmod g+s {} \;
+sudo chmod g+w /var/www/html/wp-content
+sudo chmod -R g+w /var/www/html/wp-content/themes
+sudo chmod -R g+w /var/www/html/wp-content/plugins
+sudo perl -pi -e "s/database_name_here/$dbname/g" /var/www/html/wp-config.php
+sudo perl -pi -e "s/username_here/$dbuser/g" /var/www/html/wp-config.php
+sudo perl -pi -e "s/password_here/$userpass/g" /var/www/html/wp-config.php
+sudo service nginx restart
+sudo service php7.3-fpm restart
+sudo service mysql restart
 echo "You are almost done. Replace the Secret Key in the wp-config.php with:"
 echo
 echo
