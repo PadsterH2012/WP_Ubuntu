@@ -13,9 +13,63 @@ sudo apt-get update && apt get upgrade -y
 #############################################
 sudo apt install open-vm-tools htop apache2 software-properties-common -y
 ##############################################
-sudo debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
-sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-sudo apt-get install -y postfix
+#sudo debconf-set-selections <<< "postfix postfix/mailname string $MY_DOMAIN"
+#sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Satellite system'"
+sudo cat > /var/cache/debconf/postfix.preseed <<EOF
+postfix postfix/chattr  boolean false
+postfix postfix/destinations    string  
+postfix postfix/mailbox_limit   string  0
+postfix postfix/mailname    string  $MY_DOMAIN
+postfix postfix/main_mailer_type    select  Satellite system
+postfix postfix/mynetworks  string  127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+postfix postfix/protocols   select  ipv4
+postfix postfix/recipient_delim string  +
+postfix postfix/root_address    string  $SERVER_EMAIL
+EOF
+
+sudo cat > /etc/postfix/main.cf <<EOF
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+readme_directory = no
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information on enabling SSL in the smtp client.
+myhostname = $MY_DOMAIN
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = 
+relayhost = 10.0.0.10
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = loopback-only
+inet_protocols = ipv4
+myorigin = /etc/mailname
+mynetworks_style = subnet
+smtpd_sasl_auth_enable = yes
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/smtp_sasl_password_map
+smtp_sasl_security_options = noanonymous
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+EOF
+sudo debconf-set-selections /var/cache/debconf/postfix.preseed
+sudo apt-get -q -y -o DPkg::Options::=--force-confold install postfix
+#sudo apt-get install -y postfix
 ##############################################
 sudo apt install mariadb-server mariadb-client -y
 sudo apt install expect -y
@@ -95,6 +149,8 @@ sudo chmod 1777 /tmp
 sudo service apache2 restart
 sudo service mysql restart
 ######################################################
+
+
 echo "###############################################"
 echo
 echo "Database Name: $DB_NAME"
