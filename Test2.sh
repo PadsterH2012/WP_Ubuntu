@@ -128,12 +128,12 @@ sudo a2enmod php7.3
 #############################################
 sudo perl -pi -e "s/max_execution_time = 30/max_execution_time = 6000/g" /etc/php/7.3/cli/php.ini
 sudo perl -pi -e "s/memory_limit = -1/memory_limit = 512M/g" /etc/php/7.3/cli/php.ini
-sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 256M/g" /etc/php/7.3/cli/php.ini
+sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 1024M/g" /etc/php/7.3/cli/php.ini
 sudo perl -pi -e "s/;max_input_vars = 1000/max_input_vars = 2000/g" /etc/php/7.3/cli/php.ini
 ##
 sudo perl -pi -e "s/max_execution_time = 30/max_execution_time = 6000/g" /etc/php/7.3/apache2/php.ini
 sudo perl -pi -e "s/memory_limit = -1/memory_limit = 512M/g" /etc/php/7.3/apache2/php.ini
-sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 256M/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 1024M/g" /etc/php/7.3/apache2/php.ini
 sudo perl -pi -e "s/;max_input_vars = 1000/max_input_vars = 2000/g" /etc/php/7.3/apache2/php.ini
 #############################################
 echo -n "[In progress] Detect PHP version ..."
