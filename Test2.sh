@@ -20,7 +20,8 @@ postfix postfix/chattr  boolean false
 postfix postfix/destinations    string  
 postfix postfix/mailbox_limit   string  0
 postfix postfix/mailname    string  $MY_DOMAIN
-postfix postfix/main_mailer_type    select  Satellite system
+postfix postfix/main_mailer_type select Satellite system
+postfix postfix/relayhost string 10.0.0.10
 postfix postfix/mynetworks  string  127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 postfix postfix/protocols   select  ipv4
 postfix postfix/recipient_delim string  +
