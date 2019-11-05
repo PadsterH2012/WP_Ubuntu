@@ -130,6 +130,11 @@ sudo perl -pi -e "s/max_execution_time = 30/max_execution_time = 6000/g" /etc/ph
 sudo perl -pi -e "s/memory_limit = -1/memory_limit = 512M/g" /etc/php/7.3/cli/php.ini
 sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 256M/g" /etc/php/7.3/cli/php.ini
 sudo perl -pi -e "s/;max_input_vars = 1000/max_input_vars = 2000/g" /etc/php/7.3/cli/php.ini
+##
+sudo perl -pi -e "s/max_execution_time = 30/max_execution_time = 6000/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/memory_limit = -1/memory_limit = 512M/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/upload_max_filesize = .*/upload_max_filesize = 256M/g" /etc/php/7.3/apache2/php.ini
+sudo perl -pi -e "s/;max_input_vars = 1000/max_input_vars = 2000/g" /etc/php/7.3/apache2/php.ini
 #############################################
 echo -n "[In progress] Detect PHP version ..."
 VER_PHP="$(command php --version 2>'/dev/null' \
@@ -142,6 +147,7 @@ sudo tar xzf ioncube_loaders_lin_x86-64.tar.gz -C /usr/local
 echo -n "[In progress] Add IonCube to PHP ..."
 # echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${VER_PHP}.so" > /etc/php5/conf.d/ioncube.ini
 sudo sed -i "1izend_extension=/usr/local/ioncube/ioncube_loader_lin_${VER_PHP}.so" /etc/php/7.3/cli/php.ini
+sudo sed -i "1izend_extension=/usr/local/ioncube/ioncube_loader_lin_${VER_PHP}.so" /etc/php/7.3/apache2/php.ini
 sudo rm ioncube_loaders_lin_x86-64.tar.gz
 sleep 3s
 echo -e "\r\e[0;32m[OK]\e[0m Add IonCube to PHP"
