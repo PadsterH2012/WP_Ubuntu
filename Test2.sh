@@ -140,7 +140,7 @@ sudo tar xzf ioncube_loaders_lin_x86-64.tar.gz -C /usr/local
 echo -n "[In progress] Add IonCube to PHP ..."
 # echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${VER_PHP}.so" > /etc/php5/conf.d/ioncube.ini
 sudo sed -i "1izend_extension=/usr/local/ioncube/ioncube_loader_lin_${VER_PHP}.so" /etc/php/7.3/cli/php.ini
-rm ioncube_loaders_lin_x86-64.tar.gz
+sudo rm ioncube_loaders_lin_x86-64.tar.gz
 sleep 3s
 echo -e "\r\e[0;32m[OK]\e[0m Add IonCube to PHP 
 #############################################
