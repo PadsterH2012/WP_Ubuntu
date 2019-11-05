@@ -150,6 +150,9 @@ sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
 sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
 sudo apt-get update && apt get upgrade -y
 sudo apt install webmin -y
+#sudo perl -pi -e "s/max_execution_time = 30/max_execution_time = 6000/g" /etc/webmin/phpini/config
+#sudo perl -pi -e "s/memory_limit = -1/memory_limit = 512M/g" /etc/webmin/phpini/config
+sudo perl -pi -e "s/php5/php\/7.3/g" /etc/webmin/phpini/config
 #############################################
 sudo apt-get update && apt get upgrade -y
 #############################################
