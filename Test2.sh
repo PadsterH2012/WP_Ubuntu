@@ -190,7 +190,7 @@ echo "ServerName localhost
 
 </VirtualHost>" | sudo tee /etc/apache2/sites-available/wordpress.conf
 
-
+sudo a2enmod ssl
 sudo a2ensite wordpress.conf
 sudo systemctl reload apache2
 #####################################################
