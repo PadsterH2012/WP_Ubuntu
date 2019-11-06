@@ -186,9 +186,7 @@ echo "ServerName localhost
     AllowOverride All
     order allow,deny
     allow from all
-</Directory>
-
-</VirtualHost>" | sudo tee /etc/apache2/sites-available/wordpress.conf
+</Directory> | sudo tee /etc/apache2/sites-available/wordpress.conf
 
 sudo a2enmod ssl
 sudo a2ensite wordpress.conf
