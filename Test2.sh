@@ -164,17 +164,42 @@ sudo perl -pi -e "s/php5/php\/7.3/g" /etc/webmin/phpini/config
 #############################################
 sudo apt-get update && apt get upgrade -y
 #############################################
+echo "#### $cname $servn
+ServerName localhost
+
+<VirtualHost *:80>
+    UseCanonicalName Off
+    ServerAdmin  webmaster@localhost
+    DocumentRoot /var/www/wordpress
+</VirtualHost>
+
+<VirtualHost *:443>
+    SSLEngine on
+    ServerAdmin  webmaster@localhost
+    DocumentRoot /var/www/wordpress
+</VirtualHost>
+
+<Directory /var/www/wordpress>
+    Options +FollowSymLinks
+    Options -Indexes
+    AllowOverride All
+    order allow,deny
+    allow from all
+</Directory>
+
+</VirtualHost>" > /etc/apache2/sites-available/wordpress.conf
+sudo a2ensite wordpress.conf
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
-sudo cp -R wordpress /var/www/html/
+sudo cp -R wordpress /var/www/
 
 
-sudo mkdir /var/www/html/wordpress/wp-content/uploads
+sudo mkdir /var/www/wordpress/wp-content/uploads
 
 #sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 
-sudo chown www-data:www-data -R /var/www/html/*
+sudo chown www-data:www-data -R /var/www/*
 sudo find . -type d -exec chmod 755 {} \;
 sudo find . -type f -exec chmod 644 {} \;
 sudo chmod 1777 /tmp
