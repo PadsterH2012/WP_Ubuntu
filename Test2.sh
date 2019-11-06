@@ -164,8 +164,9 @@ sudo perl -pi -e "s/php5/php\/7.3/g" /etc/webmin/phpini/config
 #############################################
 sudo apt-get update && apt get upgrade -y
 #############################################
-echo "#### $cname $servn
-ServerName localhost
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/wordpress.conf
+sudo sed -i '/^/d' /etc/apache2/sites-available/wordpress.conf
+echo "ServerName localhost
 
 <VirtualHost *:80>
     UseCanonicalName Off
@@ -187,8 +188,11 @@ ServerName localhost
     allow from all
 </Directory>
 
-</VirtualHost>" > /etc/apache2/sites-available/wordpress.conf
+</VirtualHost>" | sudo tee /etc/apache2/sites-available/wordpress.conf
+
+
 sudo a2ensite wordpress.conf
+sudo systemctl reload apache2
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -xvf latest.tar.gz
