@@ -198,17 +198,15 @@ echo "ServerName localhost
     allow from all
 </Directory>" | sudo tee /etc/apache2/sites-available/wordpress.conf
 
-echo "
+
+echo '
 #   Disable ssl compression
 SSLCompression off
-
 #   Default certificate file
-SSLCertificateFile /etc/ssl/certs/\$MY_DOMAIN.pem
-
+SSLCertificateFile /etc/ssl/certs/$MY_DOMAIN.pem
 </IfModule>
-
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
-" | sudo tee /etc/apache2/mods-available/ssl.conf
+' | sudo tee /etc/apache2/mods-available/ssl.conf
     
 
 sudo rm /etc/apache2/sites-enabled/000-default.conf
