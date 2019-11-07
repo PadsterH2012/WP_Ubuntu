@@ -196,16 +196,9 @@ echo "ServerName localhost
     AllowOverride All
     order allow,deny
     allow from all
-</Directory> | sudo tee /etc/apache2/sites-available/wordpress.conf
-sudo sed -i '/^/d' /etc/apache2/sites-available/wordpress.conf
+</Directory>" | sudo tee /etc/apache2/sites-available/wordpress.conf
 
-echo " #Disable ssl compression
-    SSLCompression off
-
-    #   Default certificate file
-    SSLCertificateFile /etc/ssl/private/$MY_DOMAIN.pem" | sudo tee /etc/apache2/mods-enabled/ssl.conf
-
-
+sudo sed -i "s/cert.pem/$MY_DOMAIN.pem/" /etc/apache2/mods-enabled/ssl.conf
 
 sudo a2enmod ssl
 sudo a2ensite wordpress.conf
