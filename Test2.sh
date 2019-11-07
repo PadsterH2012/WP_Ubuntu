@@ -213,11 +213,10 @@ sudo cp -R wordpress /var/www/
 
 sudo mkdir /var/www/wordpress/wp-content/uploads
 
-#sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
 
-sudo chown www-data:www-data -R /var/www/*
-sudo find . -type d -exec chmod 755 {} \;
-sudo find . -type f -exec chmod 644 {} \;
+sudo chown www-data:www-data -R /var/www/wordpress
+sudo find /var/www/wordpress/ -type d -exec chmod 755 {} \;
+sudo find /var/www/wordpress/ -type f -exec chmod 644 {} \;
 sudo chmod 1777 /tmp
 sudo service apache2 restart
 sudo service mysql restart
