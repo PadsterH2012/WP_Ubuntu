@@ -329,3 +329,4 @@ echo
 echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
 echo
 echo "###############################################"
+mail -s "Test Subject" paddy@bastiondata.com < /dev/null
