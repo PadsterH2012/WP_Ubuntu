@@ -186,6 +186,8 @@ echo "ServerName localhost
 
 <VirtualHost *:443>
     SSLEngine on
+    SSLCertificateFile /etc/apache2/ssl/private/$MY_DOMAIN.crt
+    SSLCertificateKeyFile /etc/apache2/ssl/private/$MY_DOMAIN.key
     ServerAdmin  webmaster@localhost
     DocumentRoot /var/www/wordpress
 </VirtualHost>
