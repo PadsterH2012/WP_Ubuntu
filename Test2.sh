@@ -42,8 +42,8 @@ append_dot_mydomain = no
 #delay_warning_time = 4h
 readme_directory = no
 # TLS parameters
-smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_cert_file=/etc/ssl/certs/$MY_DOMAIN.pem
+smtpd_tls_key_file=/etc/ssl/private/$MY_DOMAIN.key
 smtpd_use_tls=yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
@@ -154,9 +154,10 @@ echo -e "\r\e[0;32m[OK]\e[0m Add IonCube to PHP"
 #############################################
 
 sudo openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
-   -subj "/C=GB/ST=Hampshire/L=Ragthorn/O=ITDept/CN=www.example.com" \
-    -keyout $MY_DOMAIN.key  -out www.example.com.crt
+   -subj "/C=GB/ST=Hampshire/L=Ragthorn/O=ITDept/CN=$MY_DOMAIN" \
+    -keyout $MY_DOMAIN.key  -out $MY_DOMAIN.crt
 sudo cat $MY_DOMAIN.crt $MY_DOMAIN.key > $MY_DOMAIN.pem
+sudo mv $MY_DOMAIN.pem /etc/ssl/certs/
 sudo mv $MY_DOMAIN.* /etc/ssl/private/
 
 #############################################
