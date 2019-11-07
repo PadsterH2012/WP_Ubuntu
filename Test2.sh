@@ -11,7 +11,7 @@ sudo hostname $MY_DOMAIN
 #############################################
 sudo apt-get update && apt get upgrade -y
 #############################################
-sudo apt install open-vm-tools htop apache2 software-properties-common -y
+sudo apt install mailutils open-vm-tools htop apache2 software-properties-common -y
 ##############################################
 #sudo debconf-set-selections <<< "postfix postfix/mailname string $MY_DOMAIN"
 #sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Satellite system'"
