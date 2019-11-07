@@ -152,6 +152,14 @@ sudo rm ioncube_loaders_lin_x86-64.tar.gz
 sleep 3s
 echo -e "\r\e[0;32m[OK]\e[0m Add IonCube to PHP"
 #############################################
+
+sudo openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
+   -subj "/C=GB/ST=Hampshire/L=Ragthorn/O=ITDept/CN=www.example.com" \
+    -keyout $MY_DOMAIN.key  -out www.example.com.crt
+sudo cat $MY_DOMAIN.crt $MY_DOMAIN.key > $MY_DOMAIN.pem
+sudo mv $MY_DOMAIN.* /etc/ssl/private/
+
+#############################################
 sudo service apache2 restart
 #############################################
 sudo wget -qO- http://www.webmin.com/jcameron-key.asc | sudo apt-key add
@@ -165,6 +173,7 @@ sudo perl -pi -e "s/php5/php\/7.3/g" /etc/webmin/phpini/config
 sudo apt-get update && apt get upgrade -y
 #############################################
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/wordpress.conf
+sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
 sudo sed -i '/^/d' /etc/apache2/sites-available/wordpress.conf
 echo "ServerName localhost
 
@@ -187,9 +196,19 @@ echo "ServerName localhost
     order allow,deny
     allow from all
 </Directory> | sudo tee /etc/apache2/sites-available/wordpress.conf
+sudo sed -i '/^/d' /etc/apache2/sites-available/wordpress.conf
+
+echo " #Disable ssl compression
+    SSLCompression off
+
+    #   Default certificate file
+    SSLCertificateFile /etc/ssl/private/$MY_DOMAIN.pem" | sudo tee /etc/apache2/mods-enabled/ssl.conf
+
+
 
 sudo a2enmod ssl
 sudo a2ensite wordpress.conf
+sudo a2ensite default-ssl.conf
 sudo systemctl reload apache2
 #####################################################
 cd /tmp && wget https://wordpress.org/latest.tar.gz
