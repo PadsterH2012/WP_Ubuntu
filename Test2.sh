@@ -199,6 +199,7 @@ echo "ServerName localhost
 </Directory>" | sudo tee /etc/apache2/sites-available/wordpress.conf
 
 sudo sed -i "s/cert.pem/$MY_DOMAIN.pem/" /etc/apache2/mods-enabled/ssl.conf
+sudo sed -i "/#SSLStrictSNIVHostCheck On/a#   Disable ssl compression\nSSLCompression off\n#   Default certificate file\nSSLCertificateFile /etc/ssl/private/$MY_DOMAIN.pem" /etc/apache2/mods-enabled/ssl.conf
 
 sudo a2enmod ssl
 sudo a2ensite wordpress.conf
