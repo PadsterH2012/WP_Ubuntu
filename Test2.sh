@@ -231,11 +231,11 @@ SSLRandomSeed connect file:/dev/urandom 512
 #   Some MIME-types for downloading Certificates and CRLs
 #
 AddType application/x-x509-ca-cert .crt
-AddType application/x-pkcs7-crl	.crl
+AddType application/x-pkcs7-crl .crl
 
 #   Pass Phrase Dialog:
 #   Configure the pass phrase gathering process.
-#   The filtering dialog program (`builtin' is a internal
+#   The filtering dialog program (builtin is a internal
 #   terminal dialog) has to provide the pass phrase on stdout.
 SSLPassPhraseDialog builtin
 
@@ -243,8 +243,8 @@ SSLPassPhraseDialog builtin
 #   Configure the SSL Session Cache: First the mechanism 
 #   to use and second the expiring timeout (in seconds).
 #   (The mechanism dbm has known memory leaks and should not be used).
-#SSLSessionCache		 dbm:${APACHE_RUN_DIR}/ssl_scache
-SSLSessionCache		shmcb:${APACHE_RUN_DIR}/ssl_scache(512000)
+#SSLSessionCache    dbm:${APACHE_RUN_DIR}/ssl_scache
+SSLSessionCache shmcb:${APACHE_RUN_DIR}/ssl_scache(512000)
 SSLSessionCacheTimeout  300
 
 #   Semaphore:
