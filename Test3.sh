@@ -14,7 +14,6 @@ sudo hostname $MY_DOMAIN
 #############################################
 yum -y update
 #############################################
-wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
-rpm -ihv epel-release-7-11.noarch.rpm 
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum update
 yum install htop
-
