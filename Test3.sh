@@ -12,8 +12,7 @@ read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 sudo hostname $MY_DOMAIN
 #############################################
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 yum -y update
 #############################################
-yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-yum update
-yum install htop
+
