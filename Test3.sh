@@ -14,3 +14,4 @@ sudo hostname $MY_DOMAIN
 #############################################
 yum -y update
 #############################################
+yum install -y open-vm-tools htop
