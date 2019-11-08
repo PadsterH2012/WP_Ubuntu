@@ -14,4 +14,7 @@ sudo hostname $MY_DOMAIN
 #############################################
 yum -y update
 #############################################
-yum install -y open-vm-tools htop
+wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+rpm -ihv epel-release-7-11.noarch.rpm 
+yum install htop
+
