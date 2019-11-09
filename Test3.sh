@@ -53,3 +53,4 @@ server {
    }
 }
 EOF
+mkdir /usr/share/nginx/html/$MY_DOMAIN
