@@ -99,3 +99,18 @@ systemctl enable php-fpm
 LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
+
+
+
+echo "###############################################"
+echo
+echo "Database Name: $DB_NAME"
+echo
+echo "Username: $DB_USERNAME"
+echo "Password: $userpass"
+echo
+echo "IP Address: $LOCAL_IP"
+echo
+echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
+echo
+echo "###############################################"
