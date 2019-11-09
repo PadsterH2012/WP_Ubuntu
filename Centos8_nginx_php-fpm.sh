@@ -18,7 +18,7 @@ DB_USERNAME="testdbuser"
 hostname $MY_DOMAIN
 ############################################# NGINX
 #yum -y install nginx
-cat << EOF > /etc/yum.repos.d/nginx.repo
+sudo cat << EOF > /etc/yum.repos.d/nginx.repo
 [nginx-mainline]
 name=nginx mainline repo
 baseurl=http://nginx.org/packages/mainline/centos/8/x86_64/
@@ -26,7 +26,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
 EOF
-yum install -y nginx --disablerepo=* --enablerepo=nginx-mainline
+sudo yum install -y nginx --disablerepo=* --enablerepo=nginx-mainline
 systemctl start nginx
 systemctl status nginx
 firewall-cmd --permanent --add-service=http
