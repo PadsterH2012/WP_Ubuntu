@@ -39,31 +39,8 @@ yum -y install php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring p
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
 sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
 sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
-#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php-fpm.d/www.conf
-#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php-fpm.d/www.conf
-#sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php-fpm.d/www.conf
 systemctl start php-fpm
 systemctl enable php-fpm
-#touch /etc/nginx/conf.d/$MY_SITE.conf
-#cat << EOF > /etc/nginx/conf.d/$MY_SITE.conf
-#server {
-#   server_name $MY_DOMAIN;
-#   root /usr/share/nginx/html/$MY_SITE;
-#
-#   location / {
-#       index index.html index.htm index.php;
-#   }
-#
-#  location ~ \.php$ {
-#     include /etc/nginx/fastcgi_params;
-#     fastcgi_pass unix:/var/run/php-fpm.sock;
-#     fastcgi_index index.php;
-#     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#  }
-#}
-#EOF
-#mkdir /usr/share/nginx/html/$MY_SITE
-#echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
 echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/info.php
 systemctl restart nginx
 systemctl restart php-fpm
