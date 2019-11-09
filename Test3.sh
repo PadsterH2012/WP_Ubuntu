@@ -6,6 +6,7 @@
 clear
 echo "Please provide your domain name without the www. (e.g. mydomain.com)"
 read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+read -p "Type your site name, then press [ENTER] : " MY_SITE
 ##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
 #read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
 #read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
@@ -35,11 +36,11 @@ yum -y install php-fpm php-mysqlnd php-cli
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
 systemctl start php-fpm
 systemctl enable php-fpm
-touch /etc/nginx/conf.d/$MY_DOMAIN.conf
+touch /etc/nginx/conf.d/$MY_SITE.conf
 cat << EOF > /etc/nginx/conf.d/$MY_DOMAIN.conf
 server {
    server_name $MY_DOMAIN;
-   root /usr/share/nginx/html/$MY_DOMAIN;
+   root /usr/share/nginx/html/$MY_SITE;
 
    location / {
        index index.html index.htm index.php;
@@ -53,4 +54,4 @@ server {
    }
 }
 EOF
-mkdir /usr/share/nginx/html/$MY_DOMAIN
+mkdir /usr/share/nginx/html/$MY_SITE
