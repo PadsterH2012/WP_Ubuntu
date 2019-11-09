@@ -6,10 +6,14 @@
 clear
 echo "Please provide your domain name without the www. (e.g. mydomain.com)"
 read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+send \"test.com\r\"
 read -p "Type your site name, then press [ENTER] : " MY_SITE
+send \"test\r\"
 ##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
 read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
+send \"testdb\r\"
 read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
+send \"testdbuser\r\"
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 hostname $MY_DOMAIN
 ############################################# NGINX
@@ -37,7 +41,7 @@ systemctl start mariadb
 systemctl enable mariadb
 #mysql_secure_installation
 userpass=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
-MYSQL_ROOT_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
+mysqlrootpassword=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 MYSQL=""
 SECURE_MYSQL=$(expect -c "
 set timeout 10
@@ -47,9 +51,9 @@ send \"$MYSQL\r\"
 #expect \Set root password? [Y/n]\"
 send \"Y\r\"
 #expect \New password:\"
-send \"$MYSQL_ROOT_PASSWORD\r\"
+send \"$mysqlrootpassword\r\"
 #expect \Re-enter new password:\"
-send \"$MYSQL_ROOT_PASSWORD\r\"
+send \"$mysqlrootpassword\r\"
 #expect \"Remove anonymous users?\"
 send \"y\r\"
 #expect \"Disallow root login remotely?\"
@@ -62,11 +66,11 @@ expect eof
 ")
 
 echo "$SECURE_MYSQL"
-echo $MYSQL_ROOT_PASSWORD
-echo "CREATE DATABASE $DB_NAME;" | mysql -u root -p$MYSQL_ROOT_PASSWORD
-echo "CREATE USER '$DB_USERNAME'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$MYSQL_ROOT_PASSWORD
-echo "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USERNAME'@'localhost';" | mysql -u root -p$MYSQL_ROOT_PASSWORD
-echo "FLUSH PRIVILEGES;" | mysql -u root -p$MYSQL_ROOT_PASSWORD
+echo $mysqlrootpassword
+echo "CREATE DATABASE $DB_NAME;" | mysql -u root -p$mysqlrootpassword
+echo "CREATE USER '$DB_USERNAME'@'localhost' IDENTIFIED BY '$userpass';" | mysql -u root -p$mysqlrootpassword
+echo "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USERNAME'@'localhost';" | mysql -u root -p$mysqlrootpassword
+echo "FLUSH PRIVILEGES;" | mysql -u root -p$mysqlrootpassword
 ############################################# PHP-FPM
 yum -y install php-fpm php-mysqlnd php-cli
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
@@ -100,7 +104,7 @@ LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
 echo
-echo $MYSQL_ROOT_PASSWORD
+echo $mysqlrootpassword
 echo $userpass
 echo
 echo
@@ -115,6 +119,6 @@ echo "Password: $userpass"
 echo
 echo "IP Address: $LOCAL_IP"
 echo
-echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
+echo "Your MySQL ROOT Password is: $mysqlrootpassword"
 echo
 echo "###############################################"
