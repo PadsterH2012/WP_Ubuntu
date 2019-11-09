@@ -4,35 +4,32 @@
 # Run as Root
 #
 clear
-echo "Please provide your domain name without the www. (e.g. mydomain.com)"
-read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
-#read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
-read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
-read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
-#read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
-sudo hostname $MY_DOMAIN
-#############################################
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum -y update
-yum -y install yum-utils
-yum-config-manager --disable remi-php54
-yum-config-manager --enable remi-php73
-yum -y install wget expect nano nginx mariadb mariadb-server php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring
-
-#############################################
+#echo "Please provide your domain name without the www. (e.g. mydomain.com)"
+#read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
+#read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
+#read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
+##read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
+#sudo hostname $MY_DOMAIN
+############################################# NGINX
+yum -y install nginx
+cat << EOF > /etc/yum.repos.d/nginx.repo
+[nginx-mainline]
+name=nginx mainline repo
+baseurl=http://nginx.org/packages/mainline/centos/8/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+EOF
+yum install -y nginx --disablerepo=* --enablerepo=nginx-mainline
 systemctl start nginx
-systemctl enable nginx
 systemctl status nginx
-firewall-cmd --permanent --zone=public --add-service=http
-firewall-cmd --permanent --zone=public --add-service=https
-systemctl reload firewalld
-chown nginx:nginx /usr/share/nginx/html -R
-#############################################
+firewall-cmd --permanent --add-service=http
+firewall-cmd --reload
+systemctl enable nginx
+############################################# MARIADB
+yum -y install mariadb mariadb-server
 systemctl start mariadb
 systemctl enable mariadb
-systemctl status mariadb
-mysql_secure_installation
-#############################################
-systemctl start php-fpm
-systemctl enable php-fpm
-systemctl status php-fpm
+############################################# PHP-FPM
+yum -y install php-fpm php-mysqlnd php-cli
