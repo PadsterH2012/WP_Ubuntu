@@ -104,6 +104,7 @@ LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
 ##################################################
+yum install -y php-mysqlnd php-dom php-simplexml php-xml php-xmlreader php-curl php-exif php-ftp php-gd php-iconv php-json php-mbstring php-posix php-sockets php-tokenizer
 touch /etc/nginx/conf.d/$MY_SITE.conf
 cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
 server {
