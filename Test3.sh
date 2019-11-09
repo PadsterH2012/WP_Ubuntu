@@ -37,7 +37,7 @@ sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
 systemctl start php-fpm
 systemctl enable php-fpm
 touch /etc/nginx/conf.d/$MY_SITE.conf
-cat << EOF > /etc/nginx/conf.d/$MY_DOMAIN.conf
+cat << EOF > /etc/nginx/conf.d/$MY_SITE.conf
 server {
    server_name $MY_DOMAIN;
    root /usr/share/nginx/html/$MY_SITE;
