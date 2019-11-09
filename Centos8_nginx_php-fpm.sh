@@ -10,7 +10,7 @@ read -p "Type your site name, then press [ENTER] : " MY_SITE
 ##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
 read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
 read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
-read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
+#read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 hostname $MY_DOMAIN
 ############################################# NGINX
 #yum -y install nginx
@@ -36,7 +36,7 @@ yum -y install mariadb mariadb-server expect
 systemctl start mariadb
 systemctl enable mariadb
 #mysql_secure_installation
-
+userpass=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 29 | tr -d "=+/" | cut -c1-25)
 MYSQL=""
 SECURE_MYSQL=$(expect -c "
@@ -99,9 +99,12 @@ systemctl enable php-fpm
 LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
-
-
-
+$NEW_MYSQL_PASSWORD
+$userpass
+echo
+echo
+echo
+echo
 echo "###############################################"
 echo
 echo "Database Name: $DB_NAME"
