@@ -55,3 +55,4 @@ server {
 }
 EOF
 mkdir /usr/share/nginx/html/$MY_SITE
+echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
