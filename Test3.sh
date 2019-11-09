@@ -4,13 +4,13 @@
 # Run as Root
 #
 clear
-#echo "Please provide your domain name without the www. (e.g. mydomain.com)"
+echo "Please provide your domain name without the www. (e.g. mydomain.com)"
 #read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
 ##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
 #read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
 #read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 ##read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
-#sudo hostname $MY_DOMAIN
+hostname $MY_DOMAIN
 ############################################# NGINX
 cat << EOF > /etc/yum.repos.d/nginx.repo
 [nginx-mainline]
@@ -32,3 +32,24 @@ systemctl start mariadb
 systemctl enable mariadb
 ############################################# PHP-FPM
 yum -y install php-fpm php-mysqlnd php-cli
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
+systemctl start php-fpm
+systemctl enable php-fpm
+touch /etc/nginx/conf.d/$MY_DOMAIN.conf
+cat << EOF > /etc/nginx/conf.d/$MY_DOMAIN.conf
+server {
+   server_name $MY_DOMAIN;
+   root /usr/share/nginx/html/$MY_DOMAIN;
+
+   location / {
+       index index.html index.htm index.php;
+   }
+
+   location ~ \.php$ {
+      include /etc/nginx/fastcgi_params;
+      fastcgi_pass 127.0.0.1:9000;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+   }
+}
+EOF
