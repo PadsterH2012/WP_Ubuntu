@@ -12,7 +12,6 @@ clear
 ##read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 #sudo hostname $MY_DOMAIN
 ############################################# NGINX
-yum -y install nginx
 cat << EOF > /etc/yum.repos.d/nginx.repo
 [nginx-mainline]
 name=nginx mainline repo
