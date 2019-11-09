@@ -103,9 +103,57 @@ systemctl restart php-fpm
 LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
-echo
-echo $mysqlrootpassword
-echo $userpass
+##################################################
+touch /etc/nginx/conf.d/$MY_SITE.conf
+cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
+server {
+	listen 80; 
+	server_name $MY_DOMAIN;
+
+	root /sites/$MY_SITE/public_html/;
+
+	index index.html index.php;
+
+	access_log /sites/$MY_SITE/logs/access.log;
+	error_log /sites/$MY_SITE/logs/error.log;
+
+	# Don't allow pages to be rendered in an iframe on external domains.
+	add_header X-Frame-Options "SAMEORIGIN";
+
+	# MIME sniffing prevention
+	add_header X-Content-Type-Options "nosniff";
+
+	# Enable cross-site scripting filter in supported browsers.
+	add_header X-Xss-Protection "1; mode=block";
+
+	# Prevent access to hidden files
+	location ~* /\.(?!well-known\/) {
+		deny all;
+	}
+
+	# Prevent access to certain file extensions
+	location ~\.(ini|log|conf)$ {
+		deny all;
+	}
+        
+        # Enable WordPress Permananent Links
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
+
+	location ~ \.php$ {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	}
+
+}
+EOF
+mkdir -p /sites/$MY_SITE/public_html/
+mkdir -p /sites/$MY_SITE/logs/
+nginx -t
+##################################################
 echo
 echo
 echo
