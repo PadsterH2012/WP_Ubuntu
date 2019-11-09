@@ -12,7 +12,11 @@ read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 sudo hostname $MY_DOMAIN
 #############################################
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum -y install yum-utils
+yum-config-manager --disable remi-php54
+yum-config-manager --enable remi-php73
+yum -y install wget nano nginx mariadb mariadb-server php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt
 yum -y update
 #############################################
 
