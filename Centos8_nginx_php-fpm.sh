@@ -32,10 +32,37 @@ firewall-cmd --reload
 #chown nginx:nginx /usr/share/nginx/html -R
 #systemctl enable nginx
 ############################################# MARIADB
-yum -y install mariadb mariadb-server
+yum -y install mariadb mariadb-server expect
 systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation
+
+MYSQL_ROOT_PASSWORD=P0w3rPla7
+MYSQL=""
+SECURE_MYSQL=$(expect -c "
+set timeout 10
+spawn mysql_secure_installation
+expect \"Enter current password for root (enter for none):\"
+send \"$MYSQL\r\"
+expect \Set root password? [Y/n]\"
+send \"Y\r\"
+expect \New password:\"
+send \"$MYSQL_ROOT_PASSWORD\r\"
+expect \Re-enter new password:\"
+send \"$MYSQL_ROOT_PASSWORD\r\"
+expect \"Remove anonymous users?\"
+send \"y\r\"
+expect \"Disallow root login remotely?\"
+send \"y\r\"
+expect \"Remove test database and access to it?\"
+send \"y\r\"
+expect \"Reload privilege tables now?\"
+send \"y\r\"
+expect eof
+")
+
+echo "$SECURE_MYSQL"
+
 ############################################# PHP-FPM
 yum -y install php-fpm php-mysqlnd php-cli
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
