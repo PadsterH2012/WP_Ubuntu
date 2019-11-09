@@ -59,6 +59,9 @@ server {
    }
 }
 EOF
-echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/info.php
+echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
 systemctl restart nginx
 systemctl restart php-fpm
+LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
+hostname $MY_DOMAIN
+echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
