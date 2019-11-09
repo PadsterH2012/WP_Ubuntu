@@ -35,7 +35,7 @@ firewall-cmd --reload
 yum -y install mariadb mariadb-server expect
 systemctl start mariadb
 systemctl enable mariadb
-mysql_secure_installation
+#mysql_secure_installation
 
 MYSQL_ROOT_PASSWORD=P0w3rPla7
 MYSQL=""
