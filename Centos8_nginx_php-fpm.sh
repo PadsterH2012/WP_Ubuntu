@@ -108,6 +108,7 @@ echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
 ##################################################
 yum install -y php-mysqlnd php-dom php-simplexml php-xml php-xmlreader php-curl php-exif php-ftp php-gd php-iconv php-json php-mbstring php-posix php-sockets php-tokenizer
 touch /etc/nginx/conf.d/$MY_SITE.conf
+### some variables need to remain as $variables in conf file
 cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
 server {
 	listen 80; 
@@ -156,9 +157,21 @@ EOF
 sed -i 's/try_files  \//try_files $uri $uri\//g' /etc/nginx/conf.d/$MY_SITE.conf
 sed -i 's/index.php?;/index.php?$args;/g' /etc/nginx/conf.d/$MY_SITE.conf
 sed -i 's/SCRIPT_FILENAME ;/SCRIPT_FILENAME $document_root$fastcgi_script_name;/g' /etc/nginx/conf.d/$MY_SITE.conf
+# permissions need to be set for logs
 mkdir -p /sites/$MY_SITE/public_html/
 mkdir -p /sites/$MY_SITE/logs/
 nginx -t
+##################################################
+curl -O https://wordpress.org/latest.tar.gz
+tar -zxvf latest.tar.gz
+mv wordpress/* /sites/$MY_SITE/public_html/
+cp /sites/$MY_SITE/public_html/wp-config-sample.php /sites/$MY_SITE/public_html/wp-config.php
+
+sed -i 's/database_name_here/$DB_NAME/g' /sites/$MY_SITE/public_html/wp-config.php
+sed -i 's/username_here/$DB_USERNAME/g' /sites/$MY_SITE/public_html/wp-config.php
+sed -i 's/password_here/$userpass/g' /sites/$MY_SITE/public_html/wp-config.php
+sed -i 's/localhost/localhost/g' /sites/$MY_SITE/public_html/wp-config.php
+chown -R apache:apache /sites/$MY_SITE/public_html/
 ##################################################
 echo
 echo
