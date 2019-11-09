@@ -79,24 +79,26 @@ sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
 sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
 systemctl start php-fpm
 systemctl enable php-fpm
-#cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
-#server {
-#   server_name $MY_SITE;
-#   root /usr/share/nginx/html/$MY_SITE;
-#
-#
-#   location / {
-#       index index.html index.htm index.php;
-#   }
-#
-#   location ~ \.php$ {
-#      include /etc/nginx/fastcgi_params;
-#      fastcgi_pass 127.0.0.1:9000;
-#      fastcgi_index index.php;
-#      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#   }
-#}
-#EOF
+#############################################
+cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
+server {
+   server_name $MY_SITE;
+   root /usr/share/nginx/html/$MY_SITE;
+
+
+   location / {
+       index index.html index.htm index.php;
+   }
+
+   location ~ \.php$ {
+      include /etc/nginx/fastcgi_params;
+      fastcgi_pass 127.0.0.1:9000;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+   }
+}
+EOF
+mkdir /usr/share/nginx/html/$MY_SITE
 echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
 systemctl restart nginx
 systemctl restart php-fpm
