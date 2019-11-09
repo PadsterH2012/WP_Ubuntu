@@ -25,38 +25,45 @@ yum -y install nginx
 #yum install -y nginx --disablerepo=* --enablerepo=nginx-mainline
 systemctl start nginx
 systemctl status nginx
-firewall-cmd --permanent --add-service=http
-firewall-cmd --reload
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --permanent --zone=public --add-service=https
+systemctl reload firewalld
+chown nginx:nginx /usr/share/nginx/html -R
 systemctl enable nginx
 ############################################# MARIADB
 yum -y install mariadb mariadb-server
 systemctl start mariadb
 systemctl enable mariadb
 ############################################# PHP-FPM
-yum -y install php-fpm php-mysqlnd php-cli
+yum -y install php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring php-cli
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
-sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php-fpm.d/www.conf
+sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
+sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
+#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php-fpm.d/www.conf
+#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php-fpm.d/www.conf
+#sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php-fpm.d/www.conf
 systemctl start php-fpm
 systemctl enable php-fpm
-touch /etc/nginx/conf.d/$MY_SITE.conf
-cat << EOF > /etc/nginx/conf.d/$MY_SITE.conf
-server {
-   server_name $MY_DOMAIN;
-   root /usr/share/nginx/html/$MY_SITE;
-
-   location / {
-       index index.html index.htm index.php;
-   }
-
-   location ~ \.php$ {
-      include /etc/nginx/fastcgi_params;
-      fastcgi_pass 127.0.0.1:9000;
-      fastcgi_index index.php;
-      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-   }
-}
-EOF
-mkdir /usr/share/nginx/html/$MY_SITE
-echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
+#touch /etc/nginx/conf.d/$MY_SITE.conf
+#cat << EOF > /etc/nginx/conf.d/$MY_SITE.conf
+#server {
+#   server_name $MY_DOMAIN;
+#   root /usr/share/nginx/html/$MY_SITE;
+#
+#   location / {
+#       index index.html index.htm index.php;
+#   }
+#
+#  location ~ \.php$ {
+#     include /etc/nginx/fastcgi_params;
+#     fastcgi_pass unix:/var/run/php-fpm.sock;
+#     fastcgi_index index.php;
+#     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#  }
+#}
+#EOF
+#mkdir /usr/share/nginx/html/$MY_SITE
+#echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
+echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/info.php
 systemctl restart nginx
 systemctl restart php-fpm
