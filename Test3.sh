@@ -34,6 +34,7 @@ systemctl enable mariadb
 ############################################# PHP-FPM
 yum -y install php-fpm php-mysqlnd php-cli
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
+sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php-fpm.d/www.conf
 systemctl start php-fpm
 systemctl enable php-fpm
 touch /etc/nginx/conf.d/$MY_SITE.conf
@@ -48,7 +49,7 @@ server {
 
    location ~ \.php$ {
       include /etc/nginx/fastcgi_params;
-      fastcgi_pass unix:/var/run/php-fpm.sock;
+      fastcgi_pass 127.0.0.1:9000;
       fastcgi_index index.php;
       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
    }
