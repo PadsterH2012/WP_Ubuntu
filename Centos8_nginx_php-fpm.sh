@@ -32,15 +32,16 @@ firewall-cmd --reload
 #chown nginx:nginx /usr/share/nginx/html -R
 #systemctl enable nginx
 ############################################# MARIADB
-#yum -y install mariadb mariadb-server
-#systemctl start mariadb
-#systemctl enable mariadb
+yum -y install mariadb mariadb-server
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
 ############################################# PHP-FPM
-#yum -y install php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring php-cli
-#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
-#sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php.ini
-#sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
-#sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
+yum -y install php-fpm php-mysqlnd php-cli
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
+sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php.ini
+sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
+sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
 #systemctl start php-fpm
 #systemctl enable php-fpm
 #cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
