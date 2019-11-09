@@ -4,16 +4,16 @@
 # Run as Root
 #
 clear
-echo "Please provide your domain name without the www. (e.g. mydomain.com)"
-read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
-send \"test.com\r\"
-read -p "Type your site name, then press [ENTER] : " MY_SITE
-send \"test\r\"
+#echo "Please provide your domain name without the www. (e.g. mydomain.com)"
+#read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+MY_DOMAIN="test.com"
+#read -p "Type your site name, then press [ENTER] : " MY_SITE
+MY_SITE="test"
 ##read -p "Type your mysql DB ip address, then press [ENTER] : " MY_DOMAIN
-read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
-send \"testdb\r\"
-read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
-send \"testdbuser\r\"
+#read -p "Type your mysql DB name, then press [ENTER] : " DB_NAME
+DB_NAME="testdb"
+#read -p "Type your mysql Username, then press [ENTER] : " DB_USERNAME
+DB_USERNAME="testdbuser"
 #read -p "Type your mysql Password, then press [ENTER] : " DB_PASSWORD
 hostname $MY_DOMAIN
 ############################################# NGINX
