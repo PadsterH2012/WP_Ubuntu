@@ -26,42 +26,44 @@ yum install -y nginx --disablerepo=* --enablerepo=nginx-mainline
 systemctl start nginx
 systemctl status nginx
 firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-service=https
-systemctl reload firewalld
-chown nginx:nginx /usr/share/nginx/html -R
-systemctl enable nginx
+firewall-cmd --reload
+#firewall-cmd --permanent --add-service=https
+#systemctl reload firewalld
+#chown nginx:nginx /usr/share/nginx/html -R
+#systemctl enable nginx
 ############################################# MARIADB
-yum -y install mariadb mariadb-server
-systemctl start mariadb
-systemctl enable mariadb
+#yum -y install mariadb mariadb-server
+#systemctl start mariadb
+#systemctl enable mariadb
 ############################################# PHP-FPM
-yum -y install php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring php-cli
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
-sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php.ini
+#yum -y install php php-mysqlnd php-fpm php-opcache php-gd php-xml php-mbstring php-cli
+#sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php.ini
+#sed -i 's/listen = /run/php-fpm/www.sock/listen = 127.0.0.1:9000/g' /etc/php.ini
 #sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
 #sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
-systemctl start php-fpm
-systemctl enable php-fpm
-cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
-server {
-   server_name $MY_SITE;
-   root /usr/share/nginx/html/$MY_SITE;
-
-   location / {
-       index index.html index.htm index.php;
-   }
-
-   location ~ \.php$ {
-      include /etc/nginx/fastcgi_params;
-      fastcgi_pass 127.0.0.1:9000;
-      fastcgi_index index.php;
-      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-   }
-}
-EOF
-echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
-systemctl restart nginx
-systemctl restart php-fpm
+#systemctl start php-fpm
+#systemctl enable php-fpm
+#cat > /etc/nginx/conf.d/$MY_SITE.conf <<EOF
+#server {
+#   server_name $MY_SITE;
+#   root /usr/share/nginx/html/$MY_SITE;
+#
+#
+#   location / {
+#       index index.html index.htm index.php;
+#   }
+#
+#   location ~ \.php$ {
+#      include /etc/nginx/fastcgi_params;
+#      fastcgi_pass 127.0.0.1:9000;
+#      fastcgi_index index.php;
+#      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#   }
+#}
+#EOF
+#echo "<?php phpinfo(); ?>" > /usr/share/nginx/html/$MY_SITE/index.php
+#systemctl restart nginx
+#systemctl restart php-fpm
 LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
