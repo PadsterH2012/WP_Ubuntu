@@ -153,6 +153,7 @@ server {
 
 }
 EOF
+sed -i 's/try_files  \//try_files $uri $uri\//g' /etc/nginx/conf.d/$MY_SITE.conf
 sed -i 's/index.php?;/index.php?$args;/g' /etc/nginx/conf.d/$MY_SITE.conf
 sed -i 's/SCRIPT_FILENAME ;/SCRIPT_FILENAME $document_root$fastcgi_script_name;/g' /etc/nginx/conf.d/$MY_SITE.conf
 mkdir -p /sites/$MY_SITE/public_html/
