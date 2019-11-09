@@ -99,8 +99,9 @@ systemctl enable php-fpm
 LOCAL_IP=$(ip -f inet -o addr show ens160|cut -d\  -f 7 | cut -d/ -f 1)
 hostname $MY_DOMAIN
 echo " $LOCAL_IP  $MY_DOMAIN" >> /etc/hosts
-$NEW_MYSQL_PASSWORD
-$userpass
+echo
+echo $MYSQL_ROOT_PASSWORD
+echo $userpass
 echo
 echo
 echo
